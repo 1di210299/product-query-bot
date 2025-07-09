@@ -42,7 +42,7 @@ Create a `.env` file in the root directory:
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
 TOP_K_DOCUMENTS=3
-MODEL_NAME=gpt-3.5-turbo
+MODEL_NAME=gpt-4o
 EMBEDDING_MODEL=all-MiniLM-L6-v2
 HOST=0.0.0.0
 PORT=8000
