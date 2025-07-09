@@ -1,13 +1,13 @@
 # src/agents/retriever_agent.py
-from typing import List, Dict
+from typing import List, Dict, Optional
 from src.rag.retriever import DocumentRetriever
 
 class RetrieverAgent:
     """
     Agent specialized in searching for relevant documents
     """
-    def __init__(self):
-        self.retriever = DocumentRetriever()
+    def __init__(self, shared_retriever: Optional[DocumentRetriever] = None):
+        self.retriever = shared_retriever if shared_retriever else DocumentRetriever()
         self.agent_name = "RetrieverAgent"
     
     def run(self, query: str, top_k: int = 3) -> Dict:

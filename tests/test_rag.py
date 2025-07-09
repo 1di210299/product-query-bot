@@ -132,3 +132,71 @@ class TestResponseGenerator:
         response = generator.generate_response(query, [])
         assert isinstance(response, str)
         assert len(response) > 0
+
+
+def test_config_import():
+    """Test that config can be imported"""
+    try:
+        from src.utils.config import Config
+        config = Config()
+        assert config.DOCS_PATH == "docs/products"
+        assert config.TOP_K_DOCUMENTS >= 1
+        print("Config import test passed")
+    except Exception as e:
+        pytest.fail(f"Config import failed: {e}")
+
+def test_documents_exist():
+    """Test that product documents exist"""
+    import glob
+    
+    docs_pattern = "docs/products/*.txt"
+    doc_files = glob.glob(docs_pattern)
+    
+    assert len(doc_files) >= 5, f"Expected at least 5 documents, found {len(doc_files)}"
+    
+    # Check specific files exist
+    expected_files = ["shampoo_anticaspa.txt", "crema_hidratante.txt", "protector_solar.txt"]
+    found_files = [os.path.basename(f) for f in doc_files]
+    
+    for expected in expected_files:
+        assert expected in found_files, f"Missing expected file: {expected}"
+    
+    print(f"Found {len(doc_files)} product documents")
+
+def test_document_content():
+    """Test that documents have valid content"""
+    import glob
+    
+    docs_pattern = "docs/products/*.txt"
+    doc_files = glob.glob(docs_pattern)
+    
+    for doc_file in doc_files[:3]:  # Test first 3 files
+        with open(doc_file, 'r', encoding='utf-8') as f:
+            content = f.read().strip()
+        
+        assert len(content) > 50, f"Document {doc_file} seems too short"
+        assert "Precio:" in content or "Price:" in content, f"Document {doc_file} missing price info"
+    
+    print("Document content validation passed")
+
+def test_basic_rag_components():
+    """Test basic RAG component imports"""
+    try:
+        # Test that we can import the classes without initializing
+        from src.rag.generator import ResponseGenerator
+        from src.rag.retriever import DocumentRetriever
+        
+        # Check they are classes
+        assert callable(ResponseGenerator)
+        assert callable(DocumentRetriever)
+        
+        print("RAG component imports passed")
+    except ImportError as e:
+        pytest.fail(f"RAG component import failed: {e}")
+
+if __name__ == "__main__":
+    test_config_import()
+    test_documents_exist()
+    test_document_content()
+    test_basic_rag_components()
+    print("All RAG tests passed!")

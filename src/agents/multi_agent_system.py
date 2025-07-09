@@ -2,13 +2,18 @@
 from typing import Dict
 from src.agents.retriever_agent import RetrieverAgent
 from src.agents.responder_agent import ResponderAgent
+from src.rag.retriever import DocumentRetriever
 
 class MultiAgentSystem:
     """
     Multi-agent system coordinator for RAG
     """
     def __init__(self):
-        self.retriever_agent = RetrieverAgent()
+        # Create shared retriever instance
+        self.shared_retriever = DocumentRetriever()
+        
+        # Pass shared retriever to agents
+        self.retriever_agent = RetrieverAgent(shared_retriever=self.shared_retriever)
         self.responder_agent = ResponderAgent()
         self.system_name = "MultiAgentRAGSystem"
     
