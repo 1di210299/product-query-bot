@@ -144,12 +144,12 @@ chmod +x examples.sh
 # Test original system
 curl -X POST "http://localhost:8000/query" \
      -H "Content-Type: application/json" \
-     -d '{"user_id": "test_user", "query": "¿Qué champú me recomiendas para la caspa?"}'
+     -d '{"user_id": "test_user", "query": "What shampoo do you recommend for dandruff?"}'
 
 # Test LangGraph system
 curl -X POST "http://localhost:8000/query-langgraph" \
      -H "Content-Type: application/json" \
-     -d '{"user_id": "test_user", "query": "¿Qué champú me recomiendas para la caspa?"}'
+     -d '{"user_id": "test_user", "query": "What shampoo do you recommend for dandruff?"}'
 ```
 
 ### Run Unit Tests
