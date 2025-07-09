@@ -1,0 +1,29 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  product-query-bot:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - TOP_K_DOCUMENTS=3
+      - MODEL_NAME=gpt-3.5-turbo
+      - EMBEDDING_MODEL=all-MiniLM-L6-v2
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEBUG=False
+    volumes:
+      - ./docs:/app/docs
+      - chroma_data:/app/chroma_db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  chroma_data:
